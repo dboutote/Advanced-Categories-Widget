@@ -86,17 +86,9 @@ class Widget_ACW_Advanced_Categories extends WP_Widget
 
 		// widget title
 		$_title = apply_filters( 'widget_title', $instance['title'], $instance, $this->id_base );
-
-_debug( $instance );
-
-		$r = array(
-			'taxonomy' => 'category',
-			'orderby' => $instance['orderby'],
-			#'order' => $instance['order'],
-			'include' => $instance['tax_term']['category']
-		);
-		$categories = get_terms($r);
 		
+		$categories = Advanced_Categories_Widget_Utils::get_widget_categories( $instance, $this );
+_debug( $instance );
 _debug( $categories);
 
 		echo $args['before_widget'];
@@ -119,22 +111,27 @@ _debug( $categories);
 		}
 		?>
 
-		<div class="advanced-categories-widget advcatswgt-recent-categories advcatswgt-categories-wrap">
+		<div class="advanced-categories-widget advanced-categories-wrap">
 
 			<?php
 
-			do_action( 'advcatswdgt_category_list_before', $instance );
+			do_action( 'advcatswdgt_category_list_before', $instance, $categories );
+			
+			if( ! empty( $categories ) ) :
+			
+				Advanced_Categories_Widget_Views::start_list( $instance, $categories );
+				
+					foreach( $categories as $term ) {
+						Advanced_Categories_Widget_Views::start_list_item( $term, $instance, $categories );
+							Advanced_Categories_Widget_Views::list_item( $term, $instance, $categories );
+						Advanced_Categories_Widget_Views::end_list_item( $term, $instance, $categories );
+					}
+				
+				Advanced_Categories_Widget_Views::end_list( $instance, $categories );
+			
+			endif;
 
-			Advanced_Categories_Widget_Views::start_list( $instance );
 
-			Advanced_Categories_Widget_Views::start_list_item( $instance );
-
-				Advanced_Categories_Widget_Utils::get_template( "content-{$instance['item_format']}", $load = true, $require_once = false, $instance );
-
-			Advanced_Categories_Widget_Views::end_list_item( $instance );
-
-
-			Advanced_Categories_Widget_Views::end_list( $instance );
 
 			do_action( 'advcatswdgt_category_list_after', $instance );
 

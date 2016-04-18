@@ -309,7 +309,7 @@ class Advanced_Categories_Widget_Utils
 	 *         array  Image size settings; name, width, height, crop.
 	 *		   bool   False if size doesn't exist.
 	 */
-	public static function get_allowed_image_size( $size = 'thumbnail', $fields = 'all' )
+	public static function get_image_size( $size = 'thumbnail', $fields = 'all' )
 	{
 		$sizes = self::get_allowed_image_sizes( $_fields = 'all' );
 
@@ -331,29 +331,40 @@ class Advanced_Categories_Widget_Utils
 	 * Use 'advcatswdgt_post_thumb_class' to modify image classes.
 	 * Use 'advcatswdgt_post_thumbnail_html' to modify thumbnail output.
 	 *
-	 * @see Advanced_Categories_Widget_Utils::get_allowed_image_size()
+	 * @see Advanced_Categories_Widget_Utils::get_image_size()
 	 *
-	 * @uses WordPres get_post()
-	 * @uses WordPres has_post_thumbnail()
-	 * @uses WordPres get_the_post_thumbnail()
-	 * @uses WordPres the_title_attribute()
+	 * @uses WordPres wp_get_attachment_image()
 	 *
 	 * @access public
 	 *
 	 * @since 1.0
 	 *
-	 * @return
+	 * @param object $term       Term object.
+	 * @param array  $instance   Settings for the current Categories widget instance.
+	 *
+	 * @return string $html Thumbnail html.
 	 */
-	public static function get_post_thumbnail( $post = 0, $instance = array() )
+	public static function get_term_thumb( $term = 0, $instance = array() )
 	{
-		$_post = get_post( $post );
 
-		if ( empty( $_post ) ) {
+		if ( empty( $term ) ) {
 			return '';
 		}
-
+		
+		// future compatible?
+		$meta_field = apply_filters( 'advcatswgt_thumb_meta_field', '_thumbnail_id', $term, $instance );
+		
+		$_thumbnail_id = get_term_meta( $term->term_id, $meta_field, true );
+		$_thumbnail_id = absint( $_thumbnail_id );
+				
+		// no thumbnail
+		// @todo placeholder?
+		if( ! $_thumbnail_id ) {
+			return '';
+		}
+		
 		$_classes = array();
-		$_classes[] = 'advcatswgt-post-image';
+		$_classes[] = 'advcatswgt-term-image';
 		$_classes[] = 'advcatswgt-alignleft';
 
 		// was registered size selected?
@@ -367,13 +378,7 @@ class Advanced_Categories_Widget_Utils
 		}
 
 		// check if the size is registered
-		$_size_exists = self::get_allowed_image_size( $_size );
-
-		// no thumbnail
-		// @todo placeholder?
-		if( ! has_post_thumbnail( $_post ) ) {
-			return '';
-		}
+		$_size_exists = self::get_image_size( $_size );
 
 		if( $_size_exists ){
 			$_get_size = $_size;
@@ -384,29 +389,79 @@ class Advanced_Categories_Widget_Utils
 			$_get_size = array( $_w, $_h);
 		}
 
-		$classes = apply_filters( 'advcatswdgt_post_thumb_class', $_classes, $_post, $instance );
+		$classes = apply_filters( 'advcatswdgt_post_thumb_class', $_classes, $term, $instance );
 		$classes = ( ! is_array( $classes ) ) ? (array) $classes : $classes ;
 		$classes = array_map( 'sanitize_html_class', $classes );
 
 		$class_str = implode( ' ', $classes );
 
-		$_thumb = get_the_post_thumbnail(
-			$_post,
+		$_thumb = wp_get_attachment_image(
+			$_thumbnail_id,
 			$_get_size,
 			array(
 				'class' => $class_str,
-				'alt' => the_title_attribute( 'echo=0' )
+				'alt' => $term->name,
 				)
 			);
 
-		$thumb = apply_filters( 'advcatswdgt_post_thumbnail_html', $_thumb, $_post, $instance );
+		$thumb = apply_filters( 'advcatswdgt_post_thumbnail_html', $_thumb, $term, $instance );
 
 		return $thumb;
 
 	}
 
 
+	/**
+	 * Retrieves post content
+	 *
+	 * Use 'advcatswdgt_term_excerpt' to modify the text before output.
+	 * Use 'advcatswdgt_term_excerpt_length' to modify the text length before output.
+	 * Use 'advcatswdgt_term_excerpt_more' to modify the readmore text before output.
+	 *
+	 * Uses WordPress post_password_required()
+	 * Uses WordPress strip_shortcodes()
+	 * Uses WordPress wp_html_excerpt()
+	 * Uses WordPress wp_trim_words()
+	 *
+	 * @access public
+	 * @since 1.0
+	 *
+	 * @param object $term     Term object.
+	 * @param array  $instance Widget instance.
+	 * @param string $trim     Flag to trim by word or character.
+	 *
+	 * @return string $text Filtered post content.
+	 */
+	public static function get_term_excerpt( $term = 0, $instance = array(), $trim = 'words' )
+	{
+		if ( empty( $term ) ) {
+			return '';
+		}
+		
+		$_text = $term->description;
 
+		if( '' === $_text ) {
+			return '';
+		}
+
+		$text = apply_filters( 'advcatswdgt_term_excerpt', $_text, $term, $instance );
+
+		$_length = ( ! empty( $instance['desc_length'] ) ) ? absint( $instance['desc_length'] ) : 55 ;
+		$length = apply_filters( 'advcatswdgt_term_excerpt_length', $_length );
+
+		$_aposiopesis = ( ! empty( $instance['excerpt_more'] ) ) ? $instance['excerpt_more'] : '&hellip;' ;
+		$aposiopesis = apply_filters( 'advcatswdgt_term_excerpt_more', $_aposiopesis );
+
+		if( 'chars' === $trim ){
+			$text = wp_html_excerpt( $text, $length, $aposiopesis );
+		} else {
+			$text = wp_trim_words( $text, $length, $aposiopesis );
+		}
+
+		return $text;
+	}
+	
+	
 	/**
 	 * Retrieves a template file
 	 *
@@ -611,5 +666,121 @@ class Advanced_Categories_Widget_Utils
 		return in_array( $plugin, (array) get_option( 'active_plugins', array() ) ) ;
 	}
 
+
+	/**
+	 * Returns categories based on widget settings
+	 *
+	 * @access public
+	 *
+	 * @since 1.0
+	 *
+	 * @param array  $instance Current widget settings.
+	 * @param object $widget   Widget Object.
+	 *
+	 * @return string $css_url Stylesheet link.
+	 */
+	public static function get_widget_categories( $instance, $widget )
+	{
+
+		if( empty( $instance['tax_term'] ) ) {
+			return array();
+		}
+
+		$_include_taxonomies = array();
+		$_include_ids = array();
+
+		foreach( $instance['tax_term'] as $taxonomy => $term_ids ) {
+			$_include_taxonomies[] = $taxonomy;
+			array_walk_recursive( $term_ids, function( $value, $key ) use ( &$_include_ids ) {
+				$_include_ids[$key] = $value;
+			} );
+		}
+
+		$r = array(
+			'taxonomy'   => $_include_taxonomies,
+			'orderby'    => $instance['orderby'],
+			'order'      => $instance['order'],
+			'hide_empty' => 0,
+			'include'    => $_include_ids
+		);
+
+		$categories = get_terms( $r );
+
+		if ( is_wp_error( $categories ) ) {
+			$categories = array();
+		} else {
+			$categories = (array) $categories;
+		}
+
+		return $categories;
+
+	}
+
+	
+	/**
+	 * Generates unique list-item id based on widget instance and term (obj) ID
+	 *
+	 * Note: The output is not just the ID of the term. It includes the widget instance as well.
+	 * This allows for multiple term lists to be created, each with unique IDs.
+	 *
+	 * Use 'advcatswdgt_term_id' filter to modify term ID before output.
+	 *
+	 * @access public
+	 * @since 1.0
+	 *
+	 * @param object $term Term to display.
+	 * @param array  $instance Widget instance.
+	 *
+	 * @return string $term_id Filtered term ID.
+	 */
+	public static function get_unique_term_id( $term = 0, $instance = array() )
+	{
+		if( ! $term ){
+			return '';
+		}
+
+		$term_id = $instance['widget_id'] . '-term-' . $term->term_id;
+
+		return apply_filters( 'advcatswdgt_term_id', $term_id, $term, $instance );
+	}
+	
+	
+	/**
+	 * Generate term classes
+	 *
+	 * Use 'advcatswdgt_term_class' filter to modify term classes before output.
+	 *
+	 * @access public
+	 * @since 1.0
+	 *
+	 * @param object $term     Term to display.
+	 * @param array  $instance Widget instance.
+	 *
+	 * @return string $class_str CSS classes.
+	 */
+	public static function get_term_class( $term = 0, $instance = array() )
+	{
+		if( ! $term ){
+			return '';
+		}
+
+		$_classes = array();
+		$_classes[] = 'acw-term-item';
+		$_classes[] = 'acw-' . $term->taxonomy . '-item';
+		$_classes[] = 'acw-' . $term->taxonomy . '-item-' . $term->term_id;
+
+		if ( $term->parent > 0 ) {
+			$_classes[] = 'child-term';
+			$_classes[] = 'parent-' . $term->parent;
+		}
+
+		$classes = apply_filters( 'advcatswdgt_term_class', $_classes, $term, $instance );
+		$classes = ( ! is_array( $classes ) ) ? (array) $classes : $classes ;
+		$classes = array_map( 'sanitize_html_class', $classes );
+
+		$class_str = implode( ' ', $classes );
+
+		return $class_str;
+	}	
 
 }
