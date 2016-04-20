@@ -57,41 +57,41 @@ if( "undefined"==typeof jQuery )throw new Error( "Advanced Categories Widget's j
 	 */
 	function change_excerpt_size( e ) {
 		var $field = $( e.currentTarget );
-		var acatsw_excerpt_div = $field.closest( '.widgin-excerpt-size-wrap' ).find( '.widgin-excerpt' );
+		var acatw_excerpt_div = $field.closest( '.widgin-excerpt-size-wrap' ).find( '.widgin-excerpt' );
 		var size = parseInt ( ( $.trim( $field.val() ) * 1 ) + 0 );
 
-		if( acatsw_excerpt_div.length ) {
-			var words = advcatswdgt_script_vars.sample_description.match(/\S+/g).length;
+		if( acatw_excerpt_div.length ) {
+			var words = acatw_script_vars.sample_description.match(/\S+/g).length;
 			var trimmed = '';
 			if ( words > size ) {
-				trimmed = advcatswdgt_script_vars.sample_description.split(/\s+/, size).join(" ");
+				trimmed = acatw_script_vars.sample_description.split(/\s+/, size).join(" ");
 			} else {
-				trimmed = advcatswdgt_script_vars.sample_description;
+				trimmed = acatw_script_vars.sample_description;
 			}
 			
-			acatsw_excerpt_div.html( trimmed + "&hellip;" );
+			acatw_excerpt_div.html( trimmed + "&hellip;" );
 			
-			//acatsw_excerpt_div.html( advcatswdgt_script_vars.sample_description.substring( 0, size) + "&hellip;" );
+			//acatw_excerpt_div.html( acatw_script_vars.sample_description.substring( 0, size) + "&hellip;" );
 		}
 	}
 	
 	function update_excerpt_size( event, widget ){
 		var $field = widget.find( '.widgin-excerpt-length' );
-		var acatsw_excerpt_div = $field.closest( '.widgin-excerpt-size-wrap' ).find( '.widgin-excerpt' );
+		var acatw_excerpt_div = $field.closest( '.widgin-excerpt-size-wrap' ).find( '.widgin-excerpt' );
 		var size = parseInt ( ( $.trim( $field.val() ) * 1 ) + 0 );
 
-		if( acatsw_excerpt_div.length ) {
-			var words = advcatswdgt_script_vars.sample_description.match(/\S+/g).length;
+		if( acatw_excerpt_div.length ) {
+			var words = acatw_script_vars.sample_description.match(/\S+/g).length;
 			var trimmed = '';
 			if ( words > size ) {
-				trimmed = advcatswdgt_script_vars.sample_description.split(/\s+/, size).join(" ");
+				trimmed = acatw_script_vars.sample_description.split(/\s+/, size).join(" ");
 			} else {
-				trimmed = advcatswdgt_script_vars.sample_description;
+				trimmed = acatw_script_vars.sample_description;
 			}
 			
-			acatsw_excerpt_div.html( trimmed + "&hellip;" );
+			acatw_excerpt_div.html( trimmed + "&hellip;" );
 			
-			//acatsw_excerpt_div.html( advcatswdgt_script_vars.sample_description.substring( 0, size) + "&hellip;" );
+			//acatw_excerpt_div.html( acatw_script_vars.sample_description.substring( 0, size) + "&hellip;" );
 		}
 	}
 	

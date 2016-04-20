@@ -1,39 +1,42 @@
-ul.acatsw-categories-list {
+ul.acatw-term-list {
 	list-style: none !important;
 	margin-left: 0 !important;
 	padding-left: 0 !important;
 	}
 	
-.acatsw-categories-list .acatsw-list-item {
+.acatw-term-list .acatw-list-item {
 	border-bottom:1px solid #eee;
 	margin-bottom: 1em;
 	padding-bottom: 1em;
 	list-style-type: none;
 }
 
-.acatsw-categories-list .hentry {
+.acatw-term-list .hentry {
 	margin: 0;
 }
 
-.advanced-categories-widget .entry-header:before,
-.advanced-categories-widget .entry-header:after {
+.advanced-categories-widget .term-header:before,
+.advanced-categories-widget .term-header:after,
+.acatw-term-item:before,
+.acatw-term-item:after {
 	content:"";
 	display:table !important;
 }
 
-.advanced-categories-widget .entry-header:after {
-	/*clear: both;*/
+.advanced-categories-widget .term-header:after,
+.acatw-term-item:after {
+	clear: both;
 }
 
-.advanced-categories-widget .entry-header {
+.advanced-categories-widget .term-header {
 	margin-bottom: 0.538462em;
 	zoom:1;
 }
 
-.acatsw-post-thumbnail {
+.acatw-term-thumbnail {
 	position: relative;
 }
-.acatsw-post-thumbnail img {
+.acatw-term-thumbnail img {
 	border: 1px solid #eee;
     display: inline;
 }
@@ -42,8 +45,9 @@ ul.acatsw-categories-list {
 	text-decoration: none;
 }
 
-.advanced-categories-widget .acatsw-entry-header .entry-title {
+.advanced-categories-widget .acatw-term-header .term-title {
     clear: none;
+	font-family: Montserrat,"Helvetica Neue",sans-serif;
     font-weight: normal;
     line-height: 1.3125;
     margin-bottom: 0;
@@ -51,7 +55,16 @@ ul.acatsw-categories-list {
     word-wrap: break-word;
 }
 
-.advanced-categories-widget .acatsw-posted-on {
+.advanced-categories-widget .acatw-term-header .term-title a {
+    color: #1a1a1a;
+}
+
+.advanced-categories-widget .acatw-term-header .term-title a:hover, 
+.advanced-categories-widget .acatw-term-header .term-title a:focus {
+    color: #007acc;
+}
+
+.advanced-categories-widget .acatw-post-count {
     color: #686868;
     display: block;
     font-family: Montserrat,"Helvetica Neue",sans-serif;
@@ -61,30 +74,31 @@ ul.acatsw-categories-list {
     margin-bottom: 0 !important;
 }
 
-.advanced-categories-widget .acatsw-categories-list .acatsw-entry-summary {
+.advanced-categories-widget .acatw-term-list .acatw-term-summary {
+	color: #686868;
 	display: block;
 	font-size: 12px;
 	font-size: 0.7rem;
 	margin: 0 !important;
 }
 
-.acatsw-alignleft {
+.acatw-alignleft {
 	display: inline;
 	float: left;
 }
-img.acatsw-alignleft {
+img.acatw-alignleft {
 	margin: 0 10px 5px 0;
 }
 
-.acatsw-alignright {
+.acatw-alignright {
 	display: inline;
 	float: right;
 }
-img.acatsw-alignright {
+img.acatw-alignright {
 	margin: 0 0 5px 10px;
 }
 
-img.acatsw-alignnone {
+img.acatw-alignnone {
 	display: block;
 	margin: 0 auto 10px auto;
 	text-align: center;

@@ -154,7 +154,7 @@ class Advanced_Categories_Widget_Utils
 	/**
 	 * Sets default parameters
 	 *
-	 * Use 'advcatswdgt_instance_defaults' filter to modify accepted defaults.
+	 * Use 'acatw_instance_defaults' filter to modify accepted defaults.
 	 *
 	 * @uses WordPress current_theme_supports()
 	 *
@@ -169,7 +169,7 @@ class Advanced_Categories_Widget_Utils
 		$_defaults = array(
 			'title'          => __( 'Categories' ),
 			'orderby'        => 'name',
-			'order'          => 'desc',
+			'order'          => 'asc',
 			'tax_term'       => '',
 			'show_thumb'     => 0,
 			'thumb_size'     => 0,
@@ -182,7 +182,7 @@ class Advanced_Categories_Widget_Utils
 			'css_default'    => 0,
 		);
 
-		$defaults = apply_filters( "advcatswdgt_instance_defaults", $_defaults );
+		$defaults = apply_filters( "acatw_instance_defaults", $_defaults );
 
 		return $defaults;
 	}
@@ -191,7 +191,7 @@ class Advanced_Categories_Widget_Utils
 	/**
 	 * Builds a sample description
 	 *
-	 * Use 'advcatswdgt_sample_description' filter to modify Description text.
+	 * Use 'acatw_sample_description' filter to modify Description text.
 	 *
 	 * @access public
 	 *
@@ -203,14 +203,14 @@ class Advanced_Categories_Widget_Utils
 	{
 		$description = __( 'The point of the foundation is to ensure free access, in perpetuity, to the software projects we support. People and businesses may come and go, so it is important to ensure that the source code for these projects will survive beyond the current contributor base, that we may create a stable platform for web publishing for generations to come. As part of this mission, the Foundation will be responsible for protecting the WordPress, WordCamp, and related trademarks. A 501(c)3 non-profit organization, the WordPress Foundation will also pursue a charter to educate the public about WordPress and related open source software.');
 
-		return apply_filters( "advcatswdgt_sample_description", $description );
+		return apply_filters( "acatw_sample_description", $description );
 	}
 
 
 	/**
-	 * Retrieves taxonomies associated with allowed post types
+	 * Retrieves taxonomies
 	 *
-	 * Use 'advcatswdgt_allowed_taxonomies' to filter taxonomies that can be selected in the widget.
+	 * Use 'acatw_allowed_taxonomies' to filter taxonomies that can be selected in the widget.
 	 *
 	 * @see Advanced_Categories_Widget_Utils::sanitize_select_array()
 	 *
@@ -229,7 +229,7 @@ class Advanced_Categories_Widget_Utils
 
 		$_ptaxes['category'] = 'Category';
 
-		$taxes = apply_filters( 'advcatswdgt_allowed_taxonomies', $_ptaxes );
+		$taxes = apply_filters( 'acatw_allowed_taxonomies', $_ptaxes );
 		$taxes = self::sanitize_select_array( $taxes );
 
 		return $taxes;
@@ -240,7 +240,7 @@ class Advanced_Categories_Widget_Utils
 	/**
 	 * Retrieves registered image sizes
 	 *
-	 * Use 'advcatswdgt_allowed_image_sizes' to filter image sizes that can be selected in the widget.
+	 * Use 'acatw_allowed_image_sizes' to filter image sizes that can be selected in the widget.
 	 *
 	 * @see Advanced_Categories_Widget_Utils::sanitize_select_array()
 	 *
@@ -266,7 +266,7 @@ class Advanced_Categories_Widget_Utils
 			$_sizes = array_combine( $_sizes, $_sizes );
 		}
 
-		$_sizes = apply_filters( 'advcatswdgt_allowed_image_sizes', $_sizes );
+		$_sizes = apply_filters( 'acatw_allowed_image_sizes', $_sizes );
 		$sizes = self::sanitize_select_array( $_sizes );
 
 		if( count( $sizes )&& 'all' === $fields ) {
@@ -326,10 +326,10 @@ class Advanced_Categories_Widget_Utils
 
 
 	/**
-	 * Builds html for post thumbnail
+	 * Builds html for thumbnail
 	 *
-	 * Use 'advcatswdgt_post_thumb_class' to modify image classes.
-	 * Use 'advcatswdgt_post_thumbnail_html' to modify thumbnail output.
+	 * Use 'acatw_term_thumb_class' to modify image classes.
+	 * Use 'acatw_term_thumbnail_html' to modify thumbnail output.
 	 *
 	 * @see Advanced_Categories_Widget_Utils::get_image_size()
 	 *
@@ -350,22 +350,22 @@ class Advanced_Categories_Widget_Utils
 		if ( empty( $term ) ) {
 			return '';
 		}
-		
+
 		// future compatible?
-		$meta_field = apply_filters( 'advcatswgt_thumb_meta_field', '_thumbnail_id', $term, $instance );
-		
+		$meta_field = apply_filters( 'acatw_thumb_meta_field', '_thumbnail_id', $term, $instance );
+
 		$_thumbnail_id = get_term_meta( $term->term_id, $meta_field, true );
 		$_thumbnail_id = absint( $_thumbnail_id );
-				
+
 		// no thumbnail
 		// @todo placeholder?
 		if( ! $_thumbnail_id ) {
 			return '';
 		}
-		
+
 		$_classes = array();
-		$_classes[] = 'advcatswgt-term-image';
-		$_classes[] = 'advcatswgt-alignleft';
+		$_classes[] = 'acatw-term-image';
+		$_classes[] = 'acatw-alignleft';
 
 		// was registered size selected?
 		$_size = $instance['thumb_size'];
@@ -374,7 +374,7 @@ class Advanced_Categories_Widget_Utils
 		if( empty( $_size ) ){
 			$_w = absint( $instance['thumb_size_w'] );
 			$_h = absint( $instance['thumb_size_h'] );
-			$_size = "advcatswgt-thumbnail-{$_w}-{$_h}";
+			$_size = "acatw-thumbnail-{$_w}-{$_h}";
 		}
 
 		// check if the size is registered
@@ -389,7 +389,7 @@ class Advanced_Categories_Widget_Utils
 			$_get_size = array( $_w, $_h);
 		}
 
-		$classes = apply_filters( 'advcatswdgt_post_thumb_class', $_classes, $term, $instance );
+		$classes = apply_filters( 'acatw_term_thumb_class', $_classes, $term, $instance );
 		$classes = ( ! is_array( $classes ) ) ? (array) $classes : $classes ;
 		$classes = array_map( 'sanitize_html_class', $classes );
 
@@ -398,13 +398,14 @@ class Advanced_Categories_Widget_Utils
 		$_thumb = wp_get_attachment_image(
 			$_thumbnail_id,
 			$_get_size,
+			false,
 			array(
 				'class' => $class_str,
 				'alt' => $term->name,
 				)
 			);
 
-		$thumb = apply_filters( 'advcatswdgt_post_thumbnail_html', $_thumb, $term, $instance );
+		$thumb = apply_filters( 'acatw_term_thumbnail_html', $_thumb, $term, $instance );
 
 		return $thumb;
 
@@ -412,13 +413,12 @@ class Advanced_Categories_Widget_Utils
 
 
 	/**
-	 * Retrieves post content
+	 * Retrieves term description
 	 *
-	 * Use 'advcatswdgt_term_excerpt' to modify the text before output.
-	 * Use 'advcatswdgt_term_excerpt_length' to modify the text length before output.
-	 * Use 'advcatswdgt_term_excerpt_more' to modify the readmore text before output.
+	 * Use 'acatw_term_excerpt' to modify the text before output.
+	 * Use 'acatw_term_excerpt_length' to modify the text length before output.
+	 * Use 'acatw_term_excerpt_more' to modify the readmore text before output.
 	 *
-	 * Uses WordPress post_password_required()
 	 * Uses WordPress strip_shortcodes()
 	 * Uses WordPress wp_html_excerpt()
 	 * Uses WordPress wp_trim_words()
@@ -430,27 +430,30 @@ class Advanced_Categories_Widget_Utils
 	 * @param array  $instance Widget instance.
 	 * @param string $trim     Flag to trim by word or character.
 	 *
-	 * @return string $text Filtered post content.
+	 * @return string $text Filtered description.
 	 */
 	public static function get_term_excerpt( $term = 0, $instance = array(), $trim = 'words' )
 	{
 		if ( empty( $term ) ) {
 			return '';
 		}
-		
+
 		$_text = $term->description;
 
 		if( '' === $_text ) {
 			return '';
 		}
 
-		$text = apply_filters( 'advcatswdgt_term_excerpt', $_text, $term, $instance );
+		$_text = strip_shortcodes( $_text );
+		$_text = str_replace(']]>', ']]&gt;', $_text);
+
+		$text = apply_filters( 'acatw_term_excerpt', $_text, $term, $instance );
 
 		$_length = ( ! empty( $instance['desc_length'] ) ) ? absint( $instance['desc_length'] ) : 55 ;
-		$length = apply_filters( 'advcatswdgt_term_excerpt_length', $_length );
+		$length = apply_filters( 'acatw_term_excerpt_length', $_length );
 
 		$_aposiopesis = ( ! empty( $instance['excerpt_more'] ) ) ? $instance['excerpt_more'] : '&hellip;' ;
-		$aposiopesis = apply_filters( 'advcatswdgt_term_excerpt_more', $_aposiopesis );
+		$aposiopesis = apply_filters( 'acatw_term_excerpt_more', $_aposiopesis );
 
 		if( 'chars' === $trim ){
 			$text = wp_html_excerpt( $text, $length, $aposiopesis );
@@ -459,45 +462,6 @@ class Advanced_Categories_Widget_Utils
 		}
 
 		return $text;
-	}
-	
-	
-	/**
-	 * Retrieves a template file
-	 *
-	 * @see Advanced_Categories_Widget_Utils::get_plugin_sub_path()
-	 *
-	 * @access public
-	 *
-	 * @since 1.0
-	 *
-	 * @param string $file         Template file to search for.
-	 * @param bool   $load         If true the template file will be loaded if it is found.
-	 * @param bool   $require_once Whether to require_once or require. Default true. Has no effect if $load is false.
-	 * @param array  $instance     Widget instance.
-	 *
-	 * @return string $located The template filename if one is located.
-	 */
-	public static function get_template( $file, $load = false, $require_once = true, $instance = array() )
-	{
-		$located = '';
-
-		$template_name = "{$file}.php";
-		$template_path = self::get_plugin_sub_path('tpl');
-
-		if ( file_exists( $template_path . $template_name ) ) {
-			$located = $template_path . $template_name;
-		}
-
-		if ( $load && '' != $located ){
-			if ( $require_once ) {
-				require_once( $located );
-			} else {
-				require( $located );
-			}
-		}
-
-		return $located;
 	}
 
 
@@ -536,10 +500,10 @@ class Advanced_Categories_Widget_Utils
 
 
 	/**
-	 * Adds a widget to the advcatswdgt_use_css option
+	 * Adds a widget to the acatw_use_css option
 	 *
 	 * If css_default option is selected in the widget, this will add a reference to that
-	 * widget instance in the advcatswdgt_use_css option.  The 'advcatswdgt_use_css' option determines if the
+	 * widget instance in the acatw_use_css option.  The 'acatw_use_css' option determines if the
 	 * default stylesheet is enqueued on the front end.
 	 *
 	 * @uses WordPress get_option()
@@ -553,7 +517,7 @@ class Advanced_Categories_Widget_Utils
 	 */
 	public static function stick_css( $widget_id )
 	{
-		$widgets = get_option( 'advcatswdgt_use_css' );
+		$widgets = get_option( 'acatw_use_css' );
 
 		if ( ! is_array( $widgets ) ) {
 			$widgets = array( $widget_id );
@@ -563,15 +527,15 @@ class Advanced_Categories_Widget_Utils
 			$widgets[] = $widget_id;
 		}
 
-		update_option('advcatswdgt_use_css', $widgets);
+		update_option('acatw_use_css', $widgets);
 	}
 
 
 	/**
-	 * Removes a widget from the advcatswdgt_use_css option
+	 * Removes a widget from the acatw_use_css option
 	 *
 	 * If css_default option is unselected in the widget, this will remove (if applicable) a
-	 * reference to that widget instance in the advcatswdgt_use_css option. The 'advcatswdgt_use_css' option
+	 * reference to that widget instance in the acatw_use_css option. The 'acatw_use_css' option
 	 * determines if the default stylesheet is enqueued on the front end.
 	 *
 	 * @uses WordPress get_option()
@@ -585,7 +549,7 @@ class Advanced_Categories_Widget_Utils
 	 */
 	public static function unstick_css( $widget_id )
 	{
-		$widgets = get_option( 'advcatswdgt_use_css' );
+		$widgets = get_option( 'acatw_use_css' );
 
 		if ( ! is_array( $widgets ) ) {
 			return;
@@ -603,7 +567,7 @@ class Advanced_Categories_Widget_Utils
 
 		array_splice( $widgets, $offset, 1 );
 
-		update_option( 'advcatswdgt_use_css', $widgets );
+		update_option( 'acatw_use_css', $widgets );
 	}
 
 
@@ -716,14 +680,14 @@ class Advanced_Categories_Widget_Utils
 
 	}
 
-	
+
 	/**
 	 * Generates unique list-item id based on widget instance and term (obj) ID
 	 *
 	 * Note: The output is not just the ID of the term. It includes the widget instance as well.
 	 * This allows for multiple term lists to be created, each with unique IDs.
 	 *
-	 * Use 'advcatswdgt_term_id' filter to modify term ID before output.
+	 * Use 'acatw_term_id' filter to modify term ID before output.
 	 *
 	 * @access public
 	 * @since 1.0
@@ -741,14 +705,14 @@ class Advanced_Categories_Widget_Utils
 
 		$term_id = $instance['widget_id'] . '-term-' . $term->term_id;
 
-		return apply_filters( 'advcatswdgt_term_id', $term_id, $term, $instance );
+		return apply_filters( 'acatw_term_id', $term_id, $term, $instance );
 	}
-	
-	
+
+
 	/**
 	 * Generate term classes
 	 *
-	 * Use 'advcatswdgt_term_class' filter to modify term classes before output.
+	 * Use 'acatw_term_class' filter to modify term classes before output.
 	 *
 	 * @access public
 	 * @since 1.0
@@ -765,22 +729,22 @@ class Advanced_Categories_Widget_Utils
 		}
 
 		$_classes = array();
-		$_classes[] = 'acw-term-item';
-		$_classes[] = 'acw-' . $term->taxonomy . '-item';
-		$_classes[] = 'acw-' . $term->taxonomy . '-item-' . $term->term_id;
+		$_classes[] = 'acatw-term-item';
+		$_classes[] = 'acatw-' . $term->taxonomy . '-item';
+		$_classes[] = 'acatw-' . $term->taxonomy . '-item-' . $term->term_id;
 
 		if ( $term->parent > 0 ) {
 			$_classes[] = 'child-term';
 			$_classes[] = 'parent-' . $term->parent;
 		}
 
-		$classes = apply_filters( 'advcatswdgt_term_class', $_classes, $term, $instance );
+		$classes = apply_filters( 'acatw_term_class', $_classes, $term, $instance );
 		$classes = ( ! is_array( $classes ) ) ? (array) $classes : $classes ;
 		$classes = array_map( 'sanitize_html_class', $classes );
 
 		$class_str = implode( ' ', $classes );
 
 		return $class_str;
-	}	
+	}
 
 }

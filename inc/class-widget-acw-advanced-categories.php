@@ -86,10 +86,8 @@ class Widget_ACW_Advanced_Categories extends WP_Widget
 
 		// widget title
 		$_title = apply_filters( 'widget_title', $instance['title'], $instance, $this->id_base );
-		
+
 		$categories = Advanced_Categories_Widget_Utils::get_widget_categories( $instance, $this );
-_debug( $instance );
-_debug( $categories);
 
 		echo $args['before_widget'];
 
@@ -97,7 +95,7 @@ _debug( $categories);
 			echo $args['before_title'] . $_title . $args['after_title'];
 		};
 
-		do_action( 'advcatswdgt_widget_title_after', $instance );
+		do_action( 'acatw_widget_title_after', $instance );
 
 		/**
 		 * Prints out the css url only if in Customizer
@@ -111,41 +109,41 @@ _debug( $categories);
 		}
 		?>
 
+
 		<div class="advanced-categories-widget advanced-categories-wrap">
 
 			<?php
 
-			do_action( 'advcatswdgt_category_list_before', $instance, $categories );
-			
+			do_action( 'acatw_category_list_before', $instance, $categories );
+
 			if( ! empty( $categories ) ) :
-			
+
 				Advanced_Categories_Widget_Views::start_list( $instance, $categories );
 				
+					// TODO: Move to Category Walker
 					foreach( $categories as $term ) {
 						Advanced_Categories_Widget_Views::start_list_item( $term, $instance, $categories );
 							Advanced_Categories_Widget_Views::list_item( $term, $instance, $categories );
 						Advanced_Categories_Widget_Views::end_list_item( $term, $instance, $categories );
 					}
-				
+
 				Advanced_Categories_Widget_Views::end_list( $instance, $categories );
-			
+
 			endif;
 
-
-
-			do_action( 'advcatswdgt_category_list_after', $instance );
+			do_action( 'acatw_category_list_after', $instance );
 
 			?>
 
-		</div><!-- /.advcatswgt-categories-wrap -->
+		</div><!-- /.advanced-categories-wrap -->
 
 		<?php Advanced_Categories_Widget_Views::colophon(); ?>
 
 		<?php echo $args['after_widget']; ?>
 
-		
 
-		
+
+
 	<?php
 	}
 
@@ -153,7 +151,7 @@ _debug( $categories);
 	/**
 	 * Handles updating settings for the current widget instance.
 	 *
-	 * Use 'advcatswdgt_update_instance' to filter updating/sanitizing the widget instance.
+	 * Use 'acatw_update_instance' to filter updating/sanitizing the widget instance.
 	 *
 	 * @access public
 	 *
@@ -219,9 +217,9 @@ _debug( $categories);
 		$instance['widget_number'] = $this->number;
 		$instance['widget_id']     = $this->id;
 
-		$instance = apply_filters('advcatswdgt_update_instance', $instance, $new_instance, $old_instance, $this );
+		$instance = apply_filters('acatw_update_instance', $instance, $new_instance, $old_instance, $this );
 
-		do_action( 'advcatswdgt_update_widget', $this, $instance, $new_instance, $old_instance );
+		do_action( 'acatw_update_widget', $this, $instance, $new_instance, $old_instance );
 
 		return $instance;
 	}
@@ -230,7 +228,7 @@ _debug( $categories);
 	/**
 	 * Outputs the settings form for the Categories widget.
 	 *
-	 * Applies 'advcatswdgt_form_defaults' filter on form fields to allow extension by plugins.
+	 * Applies 'acatw_form_defaults' filter on form fields to allow extension by plugins.
 	 *
 	 * @access public
 	 *

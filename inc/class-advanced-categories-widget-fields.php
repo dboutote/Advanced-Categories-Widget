@@ -45,18 +45,18 @@ class Advanced_Categories_Widget_Fields
 		foreach ( $fields as $name => $field ) {
 
 			if ( $first_field === $name ) {
-				do_action( "advcatswdgt_form_before_fields_{$fieldset}", $instance, $widget );
+				do_action( "acatw_form_before_fields_{$fieldset}", $instance, $widget );
 			}
 
-			do_action( "advcatswdgt_form_before_field_{$name}", $instance, $widget );
+			do_action( "acatw_form_before_field_{$name}", $instance, $widget );
 
 			// output the actual field
-			echo apply_filters( "advcatswdgt_form_field_{$name}", $field, $instance, $widget ) . "\n";
+			echo apply_filters( "acatw_form_field_{$name}", $field, $instance, $widget ) . "\n";
 
-			do_action( "advcatswdgt_form_after_field_{$name}", $instance, $widget );
+			do_action( "acatw_form_after_field_{$name}", $instance, $widget );
 
 			if ( $last_field === $name ) {
-				do_action( "advcatswdgt_form_after_fields_{$fieldset}", $instance, $widget );
+				do_action( "acatw_form_after_fields_{$fieldset}", $instance, $widget );
 			}
 
 		}
@@ -166,7 +166,7 @@ class Advanced_Categories_Widget_Fields
 	/**
 	 * Retrieves orderby parameters
 	 *
-	 * Use 'advcatswdgt_allowed_orderby_params' to filter parameters that can be selected in the widget.
+	 * Use 'acatw_allowed_orderby_params' to filter parameters that can be selected in the widget.
 	 *
 	 * @access public
 	 *
@@ -181,7 +181,7 @@ class Advanced_Categories_Widget_Fields
 			'count'      => __( 'Post Count', 'advanced-categories-widget' ),
 		);
 
-		$params = apply_filters( "advcatswdgt_allowed_orderby_params", $_orderby );
+		$params = apply_filters( "acatw_allowed_orderby_params", $_orderby );
 		$params = Advanced_Categories_Widget_Utils::sanitize_select_array( $params );
 
 		return $params;
@@ -267,7 +267,7 @@ class Advanced_Categories_Widget_Fields
 	 */
 	public static function build_term_select( $taxonomy, $label, $instance, $widget )
 	{
-		$args = apply_filters( "advcatswdgt_build_term_select_args", array( 'hide_empty' => 0, 'number' => 99 ) );
+		$args = apply_filters( "acatw_build_term_select_args", array( 'hide_empty' => 0, 'number' => 99 ) );
 		$args['fields'] = 'all'; // don't allow override
 		$args['taxonomy'] = $taxonomy; // don't allow override
 		$_terms = get_terms( $args );

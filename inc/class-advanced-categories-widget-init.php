@@ -179,13 +179,13 @@ class Advanced_Categories_Widget_Init
 			return;
 		};
 
-		wp_enqueue_script( 'advcatswdgt-admin-scripts', $this->url . 'js/admin.js', array( 'jquery' ), '', true );
+		wp_enqueue_script( 'acatw-admin-scripts', $this->url . 'js/admin.js', array( 'jquery' ), '', true );
 
 		$sample_description = Advanced_Categories_Widget_Utils::sample_description();
 
 		wp_localize_script(
-			'advcatswdgt-admin-scripts',
-			'advcatswdgt_script_vars',
+			'acatw-admin-scripts',
+			'acatw_script_vars',
 			array(
 				'sample_description' => sprintf( __( '%s' ), $sample_description )
 			)
@@ -206,7 +206,7 @@ class Advanced_Categories_Widget_Init
 	 */
 	public function admin_styles()
 	{
-		wp_enqueue_style( 'advcatswdgt-admin-styles', $this->url . 'css/admin.css', null, null );
+		wp_enqueue_style( 'acatw-admin-styles', $this->url . 'css/admin.css', null, null );
 	}
 
 
@@ -221,7 +221,7 @@ class Advanced_Categories_Widget_Init
 	 */
 	public function store_css_option()
 	{
-		add_action( 'advcatswdgt_update_widget', array( $this, 'maybe_store_css' ), 0, 4 );
+		add_action( 'acatw_update_widget', array( $this, 'maybe_store_css' ), 0, 4 );
 		add_action( 'customize_save_widget_advanced-categories-widget', array( $this, 'maybe_store_css' ), 0, 1 );
 	}
 
@@ -255,7 +255,7 @@ class Advanced_Categories_Widget_Init
 		}	
 	
 		// see if any widget instance IDs are stored
-		$widgets = get_option( 'advcatswdgt_use_css' );
+		$widgets = get_option( 'acatw_use_css' );
 
 		// If no other widget instances are stored, and they didn't choose the default css, return
 		if( ! $widgets &&  empty ( $instance['css_default'] ) ){
@@ -263,7 +263,7 @@ class Advanced_Categories_Widget_Init
 		}
 
 		// update_option() (called by ::stick_css()) chokes the Customizer on widget update
-		if( 'advcatswdgt_update_widget' === $current_filter && is_customize_preview() ){
+		if( 'acatw_update_widget' === $current_filter && is_customize_preview() ){
 			return;
 		}
 
@@ -313,7 +313,7 @@ class Advanced_Categories_Widget_Init
 	public function front_styles()
 	{
 		$enqueue = false;
-		$widgets = get_option( 'advcatswdgt_use_css' );
+		$widgets = get_option( 'acatw_use_css' );
 
 		if ( ! is_array( $widgets ) ) {
 			return;
@@ -326,7 +326,7 @@ class Advanced_Categories_Widget_Init
 		}
 
 		if( $enqueue ) {
-			wp_enqueue_style( 'advcatswgt-css-defaults', $this->url . 'css/front.css', null, null );
+			wp_enqueue_style( 'acatw-css-defaults', $this->url . 'css/front.css', null, null );
 		}
 
 	}
