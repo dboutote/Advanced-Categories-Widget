@@ -344,7 +344,7 @@ class Advanced_Categories_Widget_Utils
 	 *
 	 * @return string $html Thumbnail html.
 	 */
-	public static function get_term_thumb( $term = 0, $instance = array() )
+	public static function get_term_thumbnail( $term = 0, $instance = array() )
 	{
 
 		if ( empty( $term ) ) {
@@ -405,7 +405,7 @@ class Advanced_Categories_Widget_Utils
 				)
 			);
 
-		$thumb = apply_filters( 'acatw_term_thumbnail_html', $_thumb, $term, $instance );
+		$thumb = apply_filters( 'acatw_term_thumbnail', $_thumb, $term, $instance );
 
 		return $thumb;
 
@@ -697,15 +697,17 @@ class Advanced_Categories_Widget_Utils
 	 *
 	 * @return string $term_id Filtered term ID.
 	 */
-	public static function get_unique_term_id( $term = 0, $instance = array() )
+	public static function get_item_id( $term = 0, $instance = array() )
 	{
 		if( ! $term ){
 			return '';
 		}
 
-		$term_id = $instance['widget_id'] . '-term-' . $term->term_id;
+		$_term_id = $instance['widget_id'] . '-term-' . $term->term_id;
+		
+		$term_id = sanitize_html_class( $_term_id );
 
-		return apply_filters( 'acatw_term_id', $term_id, $term, $instance );
+		return apply_filters( 'acatw_item_id', $term_id, $term, $instance );
 	}
 
 
@@ -722,7 +724,7 @@ class Advanced_Categories_Widget_Utils
 	 *
 	 * @return string $class_str CSS classes.
 	 */
-	public static function get_term_class( $term = 0, $instance = array() )
+	public static function get_item_class( $term = 0, $instance = array() )
 	{
 		if( ! $term ){
 			return '';

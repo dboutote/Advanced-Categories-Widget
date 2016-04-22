@@ -77,7 +77,7 @@ class Advanced_Categories_Widget_Views
 
 
 	/**
-	 * Opens the list item for the current Categories widget instance.
+	 * Opens each list item for the current widget instance.
 	 *
 	 * Use 'acatw_start_list_item' filter to filter $html before output.
 	 *
@@ -98,8 +98,8 @@ class Advanced_Categories_Widget_Views
 			return;
 		}
 
-		$item_id    = Advanced_Categories_Widget_Utils::get_unique_term_id( $term, $instance );
-		$item_class = Advanced_Categories_Widget_Utils::get_term_class( $term, $instance );
+		$item_id    = Advanced_Categories_Widget_Utils::get_item_id( $term, $instance );
+		$item_class = Advanced_Categories_Widget_Utils::get_item_class( $term, $instance );
 		$class      = 'acatw-list-item ' . $item_class;
 		
 		$tag = ( 'div' === $instance['list_style'] ) ? 'div' : 'li';
@@ -110,7 +110,7 @@ class Advanced_Categories_Widget_Views
 			$class
 			);
 
-		$html = apply_filters( 'acatw_start_list_item', $_html, $instance, $categories );
+		$html = apply_filters( 'acatw_start_list_item', $_html, $term, $instance, $categories );
 
 		if( $echo ) {
 			echo $html;
@@ -120,33 +120,45 @@ class Advanced_Categories_Widget_Views
 	}
 
 
-
+	/**
+	 * Builds each list item for the current widget instance.
+	 *
+	 * Use 'acatw_list_item' filter to filter $html before output.
+	 *
+	 * @access public
+	 *
+	 * @since 1.0
+	 *
+	 * @param object $term       Term object.
+	 * @param array  $instance   Settings for the current Categories widget instance.
+	 * @param array  $categories Array of term objects.
+	 * @param bool   $echo       Flag to echo or return the method's output.
+	 *
+	 * @return string $html Closing tag element for the list item.
+	 */
 	public static function list_item( $term, $instance, $categories, $echo = true )
 	{
-
-		$item_link  = get_term_link( $term );
 		$item_desc  = Advanced_Categories_Widget_Utils::get_term_excerpt( $term, $instance );
-		$item_id    = Advanced_Categories_Widget_Utils::get_unique_term_id( $term, $instance );
-		$item_class = Advanced_Categories_Widget_Utils::get_term_class( $term, $instance );
-		$item_thumb = '';
-		if( ! empty( $instance['show_thumb'] ) ){
-			$item_thumb = self::the_term_thumbnail( $term, $instance, false );
-		}
-		$post_count = '';
-		if( ! empty( $instance['show_count'] ) ){
-			$post_count = self::the_term_post_count( $term, $instance, false );
-		}
+		$item_id    = Advanced_Categories_Widget_Utils::get_item_id( $term, $instance );
+		$item_class = Advanced_Categories_Widget_Utils::get_item_class( $term, $instance );
+		
+		$thumb_div = ( ! empty( $instance['show_thumb'] ) ) 
+			? self::the_item_thumbnail_div( $term, $instance, false ) 
+			: '' ;
+		$post_count = ( ! empty( $instance['show_count'] ) ) 
+			? self::the_term_post_count( $term, $instance, false )
+			: '' ;
 
 		ob_start();
 
 		do_action( 'acatw_item_before', $term, $instance );
 		?>
-			<div id="term-<?php echo sanitize_html_class( $item_id ); ?>">
+			<div id="term-<?php echo $item_id ;?>" class="<?php echo $item_class ;?>" >
 
 				<?php do_action( 'acatw_item_top', $term, $instance ); ?>
 
 					<div class="term-header acatw-term-header">
-						<?php  if( ! empty( $item_thumb ) ) { echo $item_thumb; }; ?>
+						<?php  if( ! empty( $thumb_div ) ) { echo $thumb_div; }; ?>
 						<?php 
 						printf( '<h3 class="term-title acatw-term-title"><a href="%s" rel="bookmark">%s</a></h3>',
 							esc_url( get_term_link( $term ) ),
@@ -168,7 +180,9 @@ class Advanced_Categories_Widget_Views
 		<?php
 		do_action( 'acatw_item_after', $term, $instance );
 
-		$html = ob_get_clean();
+		$_html = ob_get_clean();
+		
+		$html = apply_filters( 'acatw_list_item', $_html, $term, $instance, $categories );
 
 		if( $echo ) {
 			echo $html;
@@ -180,7 +194,7 @@ class Advanced_Categories_Widget_Views
 
 
 	/**
-	 * Closes the list item for the current Categories widget instance.
+	 * Closes the list item for the current widget instance.
 	 *
 	 * Use 'acatw_end_list_item' filter to filter $html before output.
 	 *
@@ -201,7 +215,7 @@ class Advanced_Categories_Widget_Views
 
 		$_html = sprintf( '</%1$s>', $tag );
 
-		$html = apply_filters( 'acatw_end_list_item', $_html, $instance, $categories );
+		$html = apply_filters( 'acatw_end_list_item', $_html, $term, $instance, $categories );
 
 		if( $echo ) {
 			echo $html;
@@ -287,14 +301,14 @@ class Advanced_Categories_Widget_Views
 	 *
 	 * @return string $html Term thumbnail section.
 	 */
-	public static function the_term_thumbnail( $term = 0, $instance = array(), $echo = true )
+	public static function the_item_thumbnail_div( $term = 0, $instance = array(), $echo = true )
 	{
 		if ( empty( $term ) ) {
 			return '';
 		}
 
 		$_html = '';
-		$_thumb = Advanced_Categories_Widget_Utils::get_term_thumb( $term, $instance );
+		$_thumb = Advanced_Categories_Widget_Utils::get_term_thumbnail( $term, $instance );
 
 		$_classes = array();
 		$_classes[] = 'acatw-term-thumbnail';
@@ -317,7 +331,7 @@ class Advanced_Categories_Widget_Views
 
 		};
 
-		$html = apply_filters( 'acatw_term_thumbnail', $_html, $term, $instance );
+		$html = apply_filters( 'acatw_item_thumbnail_div', $_html, $term, $instance );
 
 		if( $echo ) {
 			echo $html;
@@ -358,9 +372,9 @@ class Advanced_Categories_Widget_Views
 			$type_text
 		);
 
-		$_html = sprintf( '<span class="acatw-post-count term-post-count"><a href="%2$s" rel="bookmark">%1$s</a></span>',
-			$_count_text,
-			esc_url( get_term_link( $term ) )
+		$_html = sprintf( '<span class="acatw-post-count term-post-count"><a href="%1$s" rel="bookmark">%2$s</a></span>',
+			esc_url( get_term_link( $term ) ),
+			$_count_text			
 		);
 		
 		$html = apply_filters( 'acatw_post_count_text', $_html, $term, $instance );
@@ -376,6 +390,8 @@ class Advanced_Categories_Widget_Views
 	/**
 	 * Builds category list
 	 *
+	 * Note: This is for a later release.
+	 * 
 	 * @see Widget_ACW_Advanced_Categories::widget()
 	 *
 	 * @access public
