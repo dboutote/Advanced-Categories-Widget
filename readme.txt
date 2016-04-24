@@ -60,6 +60,7 @@ The plugin's official page: http://darrinb.com/plugins/advanced-categories-widge
 = Can I contribute? =
 Of course! Have an idea for a feature?  Reach out on the plugin's official page.  Want to dive into  the code?  Jump right in!  Feel free to submit pull requests for new ideas & enhancements!
 
+Check out the project's GitHub page: https://github.com/dboutote/Advanced-Categories-Widget
 
 == Screenshots ==
 
@@ -67,8 +68,7 @@ Of course! Have an idea for a feature?  Reach out on the plugin's official page.
 2. Thumbnail size selection.
 3. Preview your thumbnail size selection.
 4. Preview your excerpt size selection.
-5. Auto-detect list formatting.
-6. Example posts list in sidebar.
+6. Example list in sidebar.
 
 
 == Changelog ==

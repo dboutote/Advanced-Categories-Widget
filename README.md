@@ -72,4 +72,5 @@ This widget was built not only with end-users in mind, but also plugin developer
 The plugin's official page: http://darrinb.com/plugins/advanced-categories-widget
 
 #### Can I contribute?
+
 Of course! Have an idea for a feature?  Reach out on the plugin's official page.  Want to dive into  the code?  Jump right in!  Feel free to submit pull requests for new ideas & enhancements!
