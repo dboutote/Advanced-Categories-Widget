@@ -290,12 +290,13 @@ class Advanced_Categories_Widget_Fields
 				<?php
 				$checked = (  ! empty( $instance['tax_term'][$_term->taxonomy][$_term->term_id] )) ? 'checked="checked"' : '' ;
 
-				printf( '<input id="%1$s" name="%2$s" value="%3$s" type="checkbox" %4$s/><label for="%1$s">%5$s</label><br />',
+				printf( '<input id="%1$s" name="%2$s" value="%3$s" type="checkbox" %4$s/><label for="%1$s">%5$s (%6$s)</label><br />',
 					$widget->get_field_id( 'tax_term-' . $taxonomy . '-' . $_term->term_id ),
 					$widget->get_field_name( 'tax_term' ) . '['.$taxonomy.']['.$_term->term_id.']',
 					$_term->term_id,
 					$checked,
-					sprintf( __( '%s', 'advanced-categories-widget' ), $_term->name )
+					sprintf( __( '%s', 'advanced-categories-widget' ), $_term->name ),
+					$_term->count
 				);
 				?>
 			<?php endforeach; ?>
