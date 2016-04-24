@@ -182,7 +182,7 @@ class Advanced_Categories_Widget_Utils
 			'css_default'    => 0,
 		);
 
-		$defaults = apply_filters( "acatw_instance_defaults", $_defaults );
+		$defaults = apply_filters( 'acatw_instance_defaults', $_defaults );
 
 		return $defaults;
 	}
@@ -203,7 +203,7 @@ class Advanced_Categories_Widget_Utils
 	{
 		$description = __( 'The point of the foundation is to ensure free access, in perpetuity, to the software projects we support. People and businesses may come and go, so it is important to ensure that the source code for these projects will survive beyond the current contributor base, that we may create a stable platform for web publishing for generations to come. As part of this mission, the Foundation will be responsible for protecting the WordPress, WordCamp, and related trademarks. A 501(c)3 non-profit organization, the WordPress Foundation will also pursue a charter to educate the public about WordPress and related open source software.');
 
-		return apply_filters( "acatw_sample_description", $description );
+		return apply_filters( 'acatw_sample_description', $description );
 	}
 
 

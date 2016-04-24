@@ -30,7 +30,7 @@
 				'orderby'   => Advanced_Categories_Widget_Fields::build_field_orderby( $instance, $this ),
 				'order'     => Advanced_Categories_Widget_Fields::build_field_order( $instance, $this ),
 			);
-			$general_fields = apply_filters( "acatw_form_fields_general", $_general_fields, $instance, $this );
+			$general_fields = apply_filters( 'acatw_form_fields_general', $_general_fields, $instance, $this );
 
 			Advanced_Categories_Widget_Fields::load_fieldset( 'general', $general_fields, $instance, $this );
 			?>
@@ -61,7 +61,7 @@
 			$_filters_fields =  array(
 				'tax_term' => Advanced_Categories_Widget_Fields::build_field_tax_term( $instance, $this ),
 			);
-			$filters_fields = apply_filters( "acatw_form_fields_filters", $_filters_fields, $instance, $this );
+			$filters_fields = apply_filters( 'acatw_form_fields_filters', $_filters_fields, $instance, $this );
 
 			Advanced_Categories_Widget_Fields::load_fieldset( 'filters', $filters_fields, $instance, $this );
 			?>
@@ -98,7 +98,7 @@
 					'thumb_size'   => Advanced_Categories_Widget_Fields::build_field_thumb_size( $instance, $this ),
 					'thumb_custom' => Advanced_Categories_Widget_Fields::build_field_thumb_custom( $instance, $this ),
 				);
-				$thumbnail_fields = apply_filters( "acatw_form_fields_thumbnails", $_thumbnail_fields, $instance, $this );
+				$thumbnail_fields = apply_filters( 'acatw_form_fields_thumbnails', $_thumbnail_fields, $instance, $this );
 
 				Advanced_Categories_Widget_Fields::load_fieldset( 'thumbnails', $thumbnail_fields, $instance, $this );
 				?>
@@ -138,7 +138,7 @@
 				'show_desc'   => Advanced_Categories_Widget_Fields::build_field_show_desc( $instance, $this ),
 				'desc_length' => Advanced_Categories_Widget_Fields::build_field_desc_length( $instance, $this ),
 			);
-			$excerpt_fields = apply_filters( "acatw_form_fields_excerpts", $_excerpt_fields, $instance, $this );
+			$excerpt_fields = apply_filters( 'acatw_form_fields_excerpts', $_excerpt_fields, $instance, $this );
 
 			Advanced_Categories_Widget_Fields::load_fieldset( 'excerpts', $excerpt_fields, $instance, $this );
 			?>
@@ -159,7 +159,7 @@
 			$_excerpt_fields =  array(
 				'show_count'  => Advanced_Categories_Widget_Fields::build_field_show_count( $instance, $this ),
 			);
-			$excerpt_fields = apply_filters( "acatw_form_fields_meta", $_excerpt_fields, $instance, $this );
+			$excerpt_fields = apply_filters( 'acatw_form_fields_meta', $_excerpt_fields, $instance, $this );
 
 			Advanced_Categories_Widget_Fields::load_fieldset( 'meta', $excerpt_fields, $instance, $this );
 			?>
@@ -180,7 +180,7 @@
 			$_format_fields =  array(
 				'list_style'  => Advanced_Categories_Widget_Fields::build_field_list_style( $instance, $this ),
 			);
-			$format_fields = apply_filters( "acatw_form_fields_format", $_format_fields, $instance, $this );
+			$format_fields = apply_filters( 'acatw_form_fields_format', $_format_fields, $instance, $this );
 
 			Advanced_Categories_Widget_Fields::load_fieldset( 'format', $format_fields, $instance, $this );
 			?>
@@ -210,7 +210,7 @@
 			$_layout_fields =  array(
 				'css_default' => Advanced_Categories_Widget_Fields::build_field_css_default( $instance, $this ),
 			);
-			$layout_fields = apply_filters( "acatw_form_fields_layout", $_layout_fields, $instance, $this );
+			$layout_fields = apply_filters( 'acatw_form_fields_layout', $_layout_fields, $instance, $this );
 
 			Advanced_Categories_Widget_Fields::load_fieldset( 'layout', $layout_fields, $instance, $this );
 			?>
