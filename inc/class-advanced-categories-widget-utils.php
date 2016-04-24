@@ -618,7 +618,7 @@ class Advanced_Categories_Widget_Utils
 	 */
 	public static function is_category_thumbnail_compatible()
 	{
-		$plugin = 'advanced-term-fields-images/advanced-term-fields-images.php';
+		$plugin = 'advanced-term-fields-featured-images/advanced-term-fields-images.php';
 
 		if ( is_multisite() ) {
 			$active_plugins = get_site_option( 'active_sitewide_plugins' );
@@ -634,6 +634,11 @@ class Advanced_Categories_Widget_Utils
 	/**
 	 * Returns categories based on widget settings
 	 *
+	 * Note: prior to WP4.5 get_terms() accepted the taxonomy as a separate argument.  As of 4.5
+	 * get_terms() accepts one array of arguments with the taxonomy arg passed as an array value.
+	 * We're calling get_terms() using the older format for sites with older versions of WP.
+	 *
+	 * @uses WordPress get_terms()
 	 * @access public
 	 *
 	 * @since 1.0
@@ -668,7 +673,7 @@ class Advanced_Categories_Widget_Utils
 			'include'    => $_include_ids
 		);
 
-		$categories = get_terms( $r );
+		$categories = get_terms( $_include_taxonomies, $r );
 
 		if ( is_wp_error( $categories ) ) {
 			$categories = array();
@@ -704,7 +709,7 @@ class Advanced_Categories_Widget_Utils
 		}
 
 		$_term_id = $instance['widget_id'] . '-term-' . $term->term_id;
-		
+
 		$term_id = sanitize_html_class( $_term_id );
 
 		return apply_filters( 'acatw_item_id', $term_id, $term, $instance );

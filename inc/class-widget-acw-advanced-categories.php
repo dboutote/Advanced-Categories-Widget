@@ -119,7 +119,7 @@ class Widget_ACW_Advanced_Categories extends WP_Widget
 			if( ! empty( $categories ) ) :
 
 				Advanced_Categories_Widget_Views::start_list( $instance, $categories );
-				
+
 					// TODO: Move to Category Walker
 					foreach( $categories as $term ) {
 						Advanced_Categories_Widget_Views::start_list_item( $term, $instance, $categories );

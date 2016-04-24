@@ -106,13 +106,14 @@
 			<?php else : ?>
 
 				<?php
+				$_install_url = add_query_arg( 's', 'Advanced+Term+Images', admin_url( 'plugin-install.php?tab=search' ) );
 				$_intro = sprintf( 'The Advanced Categories Widget is compatible with the <b>%1$s</b> plugin to display featured images for category terms.  It appears the <b>%1$s</b> plugin is not installed on your site.  Please install this plugin to enable compatibility.',
 					sprintf( '<a href="%1$s">%2$s</a>',
-						esc_url( 'https://wordpress.org/plugins/advanced-term-fields-featured-images/' ),
-						'Advanced Term Fields'
+						esc_url( $_install_url ),
+						'Advanced Term Images'
 					)
 				); ?>
-				
+
 				<div class="description widgin-description">
 					<?php echo wpautop( $_intro ); ?>
 				</div>
@@ -144,8 +145,8 @@
 		</fieldset>
 
 	</div><!-- /.widgin-section -->
-	
-	
+
+
 	<div class="widgin-section">
 
 		<?php echo Advanced_Categories_Widget_Fields::build_section_header( $fieldset = 'meta', $title = 'Category Meta', $instance, $this ); ?>
@@ -164,7 +165,7 @@
 			?>
 		</fieldset>
 
-	</div><!-- /.widgin-section -->	
+	</div><!-- /.widgin-section -->
 
 
 	<div class="widgin-section">

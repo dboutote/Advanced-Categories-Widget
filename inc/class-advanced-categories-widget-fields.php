@@ -256,6 +256,12 @@ class Advanced_Categories_Widget_Fields
 	/**
 	 * Builds select drop down for form field: tax_term
 	 *
+	 * Note: prior to WP4.5 get_terms() accepted the taxonomy as a separate argument.  As of 4.5
+	 * get_terms() accepts one array of arguments with the taxonomy arg passed as an array value.
+	 * We're calling get_terms() using the older format for sites with older versions of WP.
+	 *
+	 * @uses WordPress get_terms()
+	 *
 	 * @access public
 	 *
 	 * @since 1.0
@@ -270,15 +276,15 @@ class Advanced_Categories_Widget_Fields
 		$args = apply_filters( "acatw_build_term_select_args", array( 'hide_empty' => 0, 'number' => 99 ) );
 		$args['fields'] = 'all'; // don't allow override
 		$args['taxonomy'] = $taxonomy; // don't allow override
-		$_terms = get_terms( $args );
+		$_terms = get_terms( $taxonomy, $args );
 
 		if( empty( $_terms ) || is_wp_error( $_terms ) ) {
 			return;
 		}
 		?>
-		
+
 		<?php printf( '<p>%s:</p>', sprintf( __( '%s', 'advanced-categories-widget' ), $label ) ); ?>
-		
+
 		<div class="widgin-multi-check">
 			<?php foreach( $_terms as $_term ) : ?>
 				<?php
