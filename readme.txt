@@ -1,4 +1,4 @@
-=== Advanced Posts Widget ===
+=== Advanced Categories Widget ===
 Contributors: dbmartin
 Tags: category, categories, category-widget, categories-widget, post-category, post-categories,
 Requires at least: 4.4
