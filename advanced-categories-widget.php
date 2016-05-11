@@ -5,12 +5,12 @@
  * @package Advanced_Categories_Widget
  *
  * @license     http://www.gnu.org/licenses/gpl-2.0.txt GPL-2.0+
- * @version     1.0
+ * @version     1.1
  *
  * Plugin Name: Advanced Categories Widget
  * Plugin URI:  http://darrinb.com/plugins/advanced-categories-widget
  * Description: A highly customizable recent categories widget.
- * Version:     1.0
+ * Version:     1.1
  * Author:      Darrin Boutote
  * Author URI:  http://darrinb.com
  * Text Domain: advanced-categories-widget
