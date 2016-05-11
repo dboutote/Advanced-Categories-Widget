@@ -1,0 +1,163 @@
+.widgin-widget-form { margin-bottom: 15px; }
+
+.widgin-section { margin: 5px 0; }
+
+.widgin-section-top {
+	background: #f5f5f5 none repeat scroll 0 0;
+	border: 1px solid #ddd;
+	cursor: pointer;
+	}
+
+.widgin-section-top.widgin-active,
+.widgin-section-top:hover {
+	background: #f1f1f1 none repeat scroll 0 0;
+	border: 1px solid #ccc;
+}
+
+.widgin-section-top.widgin-active {
+	background: rgba(0, 0, 0, 0.1);
+}
+
+.widgin-top-action {
+	float: right;
+	position: relative;
+}
+
+.widgin-action-indicator {
+	box-shadow: none;
+	color: inherit;
+	outline: medium none;
+	text-decoration: none;
+}
+
+a.widgin-action-indicator:focus,
+a.widgin-action-indicator:focus::after {
+	border: 0 none;
+	box-shadow: 0 0 0 0 !important;
+}
+
+a.widgin-action-indicator:after {
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	border: 0 none;
+	background: none;
+	content: "\f140";
+	display: block;
+	font: normal 20px/1 dashicons;
+	margin-top: 10px;
+	margin-right: 10px;
+	padding: 1px 2px 1px 0px;
+	position: relative;
+	right: 0;
+	speak: none;
+	text-align: center;
+	text-decoration: none !important;
+	text-indent: 0;
+}
+
+.widgin-section-top.widgin-active a.widgin-action-indicator:after {
+	content: "\f142";
+}
+
+.widgin-section-heading {
+	font-size: 1em;
+	line-height: 1;
+	margin: 0;
+	overflow: hidden;
+	padding: 15px 10px;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.widgin-fieldset {
+	background-color: #fafafa;
+	border-width: 0 1px 1px 1px;
+	border-color: #e5e5e5;
+	border-style: solid;
+	padding: 0 10px 10px;
+}
+
+.widgin-preview-container {
+	max-width: 378px;
+	overflow: hidden;
+	width: 100%;
+	display: block;
+	margin: 1em 0 13px;
+	overflow-x: auto;
+	overflow-y: hidden !important;
+	width: 100%;
+}
+
+#customize-controls .widgin-preview-container { max-width: 210px; }
+
+.widgin-thumbnail-preview {
+	background-color: #eee;
+	border: 1px solid #ddd;
+	display: block;
+	padding: 5px;
+	text-align: center;
+}
+
+.widgin-thumbnail-preview .dashicons {
+	color: #ccc;
+	font-size: inherit;
+	height: 100%;
+	width: 100%;
+}
+
+.widgin-thumbsize-wrap label {
+	display: inline-block;
+	min-width: 50px;
+}
+
+
+.widgin-excerpt-preview {
+	background-color: #fafafa;
+	display: block;
+	font-style: italic;
+	padding: 6px;
+}
+
+.widgin-excerpt-sample {
+	display: none;
+	speak: none;
+}
+
+.widgin-excerpt { opacity: 0.8; }
+
+.widgin-widget-form .widgin-description {
+	margin-bottom: 1em !important;
+	padding-bottom: 0 !important;
+}
+
+.widgin-widget-form .widgin-description b {
+	color: #444;
+}
+
+.widgin-radio-block {
+    display: block !important;
+    margin: 3px 0;
+    padding: 2px;
+}
+
+.widgin-fieldset label {
+    display: inline-block;
+    margin-bottom: 1px;
+    padding: 1px 0;
+}
+
+.widgin-fieldset h5 {
+	font-size: 1em;
+	margin: 1
+}
+
+.widgin-multi-check {
+    background: #fff none repeat scroll 0 0;
+    border: 1px solid #e5e5e5;
+    max-height: 150px;
+    overflow: auto;
+	margin-bottom: 10px;
+    padding: 5px;
+}
+
+/* widgin-defaults */

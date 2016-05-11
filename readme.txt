@@ -1,9 +1,9 @@
 === Advanced Categories Widget ===
 Contributors: dbmartin
-Tags: category, categories, category-widget, categories-widget, post-category, post-categories, widget
+Tags: category, categories, category-widget, categories-widget, post-category, post-categories,
 Requires at least: 4.4
 Tested up to: 4.5
-Stable tag: 1.0
+Stable tag: 1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -72,6 +72,12 @@ Check out the project's GitHub page: https://github.com/dboutote/Advanced-Catego
 
 
 == Changelog ==
+
+= 1.1.0 =
+* Updated admin js to use Widgins core js
+* Updated admin css to use Widgins core css
+* Added functionality to remove widget option when widget instance is deleted.
+* Added uninstall.php
 
 = 1.0 =
 * Initial release

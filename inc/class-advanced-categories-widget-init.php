@@ -7,8 +7,7 @@
  *
  * @package Advanced_Categories_Widget
  *
- * @since 1.0
- *
+ * @since 1.0.0
  */
 
 // No direct access
@@ -25,7 +24,7 @@ class Advanced_Categories_Widget_Init
 	/**
 	 * Full file path to plugin file
 	 *
-	 * @since 1.0
+	 * @since 1.0.0
 	 *
 	 * @var string
 	 */
@@ -35,7 +34,7 @@ class Advanced_Categories_Widget_Init
 	/**
 	 * URL to plugin
 	 *
-	 * @since 1.0
+	 * @since 1.0.0
 	 *
 	 * @var string
 	 */
@@ -45,7 +44,7 @@ class Advanced_Categories_Widget_Init
 	/**
 	 * Filesystem directory path to plugin
 	 *
-	 * @since 1.0
+	 * @since 1.0.0
 	 *
 	 * @var string
 	 */
@@ -57,7 +56,7 @@ class Advanced_Categories_Widget_Init
 	 *
 	 * e.g. "advanced-categories-widget/advanced-categories-widget.php"
 	 *
-	 * @since 1.0
+	 * @since 1.0.0
 	 *
 	 * @var string
 	 */
@@ -69,7 +68,7 @@ class Advanced_Categories_Widget_Init
 	 *
 	 * @access public
 	 *
-	 * @since 1.0
+	 * @since 1.0.0
 	 *
 	 * @param string $file Full file path to calling plugin file
 	 */
@@ -88,18 +87,19 @@ class Advanced_Categories_Widget_Init
 	 * @see Advanced_Categories_Widget_Init::init_widget()
 	 * @see Advanced_Categories_Widget_Init::init_admin_scripts_and_styles()
 	 * @see Advanced_Categories_Widget_Init::store_css_option()
-	 * @see Advanced_Categories_Widget_Init::init_css_option()
+	 * @see Advanced_Categories_Widget_Init::init_front_styles()
 	 *
 	 * @access public
 	 *
-	 * @since 1.0
+	 * @since 1.0.0
 	 */
 	public function init()
 	{
 		$this->init_widget();
 		$this->init_admin_scripts_and_styles();
 		$this->store_css_option();
-		$this->init_css_option();
+		$this->init_front_styles();
+		$this->init_del_options();
 	}
 
 
@@ -110,7 +110,7 @@ class Advanced_Categories_Widget_Init
 	 *
 	 * @access public
 	 *
-	 * @since 1.0
+	 * @since 1.0.0
 	 */
 	public function init_widget()
 	{
@@ -125,7 +125,7 @@ class Advanced_Categories_Widget_Init
 	 *
 	 * @access public
 	 *
-	 * @since 1.0
+	 * @since 1.0.0
 	 */
 	public function register_widget()
 	{
@@ -141,15 +141,13 @@ class Advanced_Categories_Widget_Init
 	 *
 	 * @access public
 	 *
-	 * @since 1.0
-	 *
-	 * @return void
+	 * @since 1.0.0
 	 */
 	public function init_admin_scripts_and_styles()
 	{
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_scripts' ) );
 		add_action( 'customize_controls_enqueue_scripts', array( $this, 'admin_scripts' ) );
-		
+
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_styles' ) );
 		add_action( 'customize_controls_enqueue_scripts', array( $this, 'admin_styles' ) );
 		add_action( 'customize_controls_enqueue_scripts', array( $this, 'front_styles' ) );
@@ -159,11 +157,11 @@ class Advanced_Categories_Widget_Init
 	/**
 	 * Loads js admin scripts
 	 *
+	 * Note: Only loads on customize.php or widgets.php
+	 *
 	 * @access public
 	 *
-	 * @since 1.0
-	 *
-	 * @return void
+	 * @since 1.0.0
 	 */
 	public function admin_scripts( $hook )
 	{
@@ -179,17 +177,9 @@ class Advanced_Categories_Widget_Init
 			return;
 		};
 
-		wp_enqueue_script( 'acatw-admin-scripts', $this->url . 'js/admin.js', array( 'jquery' ), '', true );
+		wp_enqueue_script( 'widgins', $this->url . 'js/widgins.js', array( 'jquery' ), '', true );
 
-		$sample_description = Advanced_Categories_Widget_Utils::sample_description();
-
-		wp_localize_script(
-			'acatw-admin-scripts',
-			'acatw_script_vars',
-			array(
-				'sample_description' => sprintf( __( '%s' ), $sample_description )
-			)
-		);
+		#wp_enqueue_script( 'acatw-admin-scripts', $this->url . 'js/admin.js', array( 'widgins' ), '', true );
 	}
 
 
@@ -200,13 +190,24 @@ class Advanced_Categories_Widget_Init
 	 *
 	 * @access public
 	 *
-	 * @since 1.0
-	 *
-	 * @return void
+	 * @since 1.0.0
 	 */
 	public function admin_styles()
 	{
-		wp_enqueue_style( 'acatw-admin-styles', $this->url . 'css/admin.css', null, null );
+		wp_enqueue_style(
+			'widgins',
+			$this->url . 'css/widgins.css',
+			array(),
+			'1.0.0',
+			'all'
+		);
+		wp_enqueue_style(
+			'acatw-admin-styles',
+			$this->url . 'css/admin.css',
+			array( 'widgins' ),
+			'1.0.0',
+			'all'
+		);
 	}
 
 
@@ -217,7 +218,7 @@ class Advanced_Categories_Widget_Init
 	 *
 	 * @access public
 	 *
-	 * @since 1.0
+	 * @since 1.0.0
 	 */
 	public function store_css_option()
 	{
@@ -238,22 +239,22 @@ class Advanced_Categories_Widget_Init
 	 *
 	 * @access public
 	 *
-	 * @since 1.0
+	 * @since 1.0.0
 	 *
-	 * @param object $widget Widget|WP_Customize_Setting instance; depends on calling filter.
-	 * @param array $instance Current widget settings pre-save
-	 * @param array $new_instance New settings for instance input by the user via WP_Widget::form().
-	 * @param array $old_instance Old settings for instance.
+	 * @param object $widget       Widget|WP_Customize_Setting instance; depends on calling filter.
+	 * @param array  $instance     Current widget settings pre-save
+	 * @param array  $new_instance New settings for instance input by the user via WP_Widget::form().
+	 * @param array  $old_instance Old settings for instance.
 	 */
 	public function maybe_store_css( $widget, $instance = array(), $new_instance = array(), $old_instance = array() )
 	{
 		$current_filter = current_filter();
-				
+
 		// The Customizer doesn't pass an $instance array like widgets.php does
 		if( 'customize_save_widget_advanced-categories-widget' === $current_filter ){
 			$instance = $widget->post_value();
-		}	
-	
+		}
+
 		// see if any widget instance IDs are stored
 		$widgets = get_option( 'acatw_use_css' );
 
@@ -271,7 +272,7 @@ class Advanced_Categories_Widget_Init
 		if( empty( $instance['widget_id'] ) ){
 			return;
 		}
-		
+
 		// get the widget instance ID
 		$widget_id = $instance['widget_id'];
 
@@ -291,9 +292,9 @@ class Advanced_Categories_Widget_Init
 	 *
 	 * @access public
 	 *
-	 * @since 1.0
+	 * @since 1.0.0
 	 */
-	public function init_css_option()
+	public function init_front_styles()
 	{
 		add_action( 'wp_enqueue_scripts', array( $this, 'front_styles' ) );
 	}
@@ -306,7 +307,7 @@ class Advanced_Categories_Widget_Init
 	 *
 	 * @access public
 	 *
-	 * @since 1.0
+	 * @since 1.0.0
 	 *
 	 * @return void
 	 */
@@ -326,9 +327,51 @@ class Advanced_Categories_Widget_Init
 		}
 
 		if( $enqueue ) {
-			wp_enqueue_style( 'acatw-css-defaults', $this->url . 'css/front.css', null, null );
+			wp_enqueue_style( 'eshuflw-css-defaults', $this->url . 'css/front.css', null, null );
+		}
+	}
+
+
+	/**
+	 * Calls to delete widget options on widget delete
+	 *
+	 * @see Advanced_Categories_Widget_Init::delete_widget_options()
+	 *
+	 * @access public
+	 *
+	 * @since 1.0.0
+	 */
+	public function init_del_options()
+	{
+		add_action( 'delete_widget', array( $this, 'delete_widget_options' ), 0, 3 );
+	}
+
+
+	/**
+	 * Unsticks/removes widget options when widget is deleted
+	 *
+	 * @access public
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $widget_id  ID of the widget marked for deletion.
+	 * @param string $sidebar_id ID of the sidebar the widget was deleted from.
+	 * @param string $id_base    ID base for the widget.
+	 */
+	public function delete_widget_options( $widget_id = 0, $sidebar_id = '', $id_base = '' )
+	{
+		// if there's no widget, bail
+		if( ! $widget_id ) {
+			return;
 		}
 
+		global $wp_registered_widgets;
+
+		if ( ! isset( $wp_registered_widgets[$widget_id] ) ) {
+			return;
+		}
+
+		Advanced_Categories_Widget_Utils::unstick_css( $widget_id );
 	}
 
 }

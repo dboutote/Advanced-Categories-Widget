@@ -415,28 +415,29 @@ class Advanced_Categories_Widget_Fields
 	{
 		ob_start();
 		?>
-		<div class="widgin-thumb-size-wrap">
+		<div class="widgin-thumbsize-wrap">
 
 			<p>
 				<label><?php _e( 'Set Custom Size:', 'advanced-categories-widget' ); ?></label><br />
-				<label class="widgin-thumbsize" for="<?php echo $widget->get_field_id( 'thumb_size_w' ); ?>">
+
+				<label for="<?php echo $widget->get_field_id( 'thumb_size_w' ); ?>">
 					<?php _e( 'Width:', 'advanced-categories-widget' ); ?>
 				</label>
 				<input class="small-text widgin-thumb-size widgin-thumb-width" id="<?php echo $widget->get_field_id( 'thumb_size_w' ); ?>" name="<?php echo $widget->get_field_name( 'thumb_size_w' ); ?>" type="number" value="<?php echo absint( $instance['thumb_size_w'] ); ?>" />
 
 				<br />
 
-				<label class="widgin-thumbsize" for="<?php echo $widget->get_field_id( 'thumb_size_h' ); ?>">
+				<label for="<?php echo $widget->get_field_id( 'thumb_size_h' ); ?>">
 					<?php _e( 'Height:', 'advanced-categories-widget' ); ?>
 				</label>
 				<input class="small-text widgin-thumb-size widgin-thumb-height" id="<?php echo $widget->get_field_id( 'thumb_size_h' ); ?>" name="<?php echo $widget->get_field_name( 'thumb_size_h' ); ?>" type="number" value="<?php echo absint( $instance['thumb_size_h'] ); ?>" />
 			</p>
 
 			<p>
-				<?php _e( 'Preview Custom Size:', 'advanced-categories-widget' ); ?><br />
+				<?php _e( 'Preview Custom Size:', 'easy-shuffle-widget' ); ?><br />
 				<span class="widgin-preview-container">
-					<span class="widgin-thumb-preview" style="font-size: <?php echo absint( $instance['thumb_size_h'] ); ?>px; height:<?php echo absint( $instance['thumb_size_h'] ); ?>px; width:<?php echo absint( $instance['thumb_size_w'] ); ?>px">
-						<i class="widgin-thumb dashicons dashicons-format-image"></i>
+					<span class="widgin-thumbnail-preview" style="font-size: <?php echo absint( $instance['thumb_size_h'] ); ?>px; height:<?php echo absint( $instance['thumb_size_h'] ); ?>px; width:<?php echo absint( $instance['thumb_size_w'] ); ?>px">
+						<i class="widgin-preview-image dashicons dashicons-format-image"></i>
 					</span>
 				</span>
 			</p>
@@ -494,20 +495,27 @@ class Advanced_Categories_Widget_Fields
 		ob_start();
 		?>
 
-		<p class="widgin-excerpt-size-wrap">
-			<label for="<?php echo $widget->get_field_id( 'desc_length' ); ?>">
-				<?php _e( 'Excerpt Length:', 'advanced-categories-widget' ); ?>
-			</label>
-			<input class="widefat widgin-excerpt-length" id="<?php echo $widget->get_field_id( 'desc_length' ); ?>" name="<?php echo $widget->get_field_name( 'desc_length' ); ?>" type="number" step="1" min="0" value="<?php echo absint( $instance['desc_length'] ); ?>" />
+		<div class="widgin-excerptsize-wrap">
 
-			<label class="widgin-preview-l">
-				<?php _e( 'Preview:', 'advanced-categories-widget' ); ?>
-			</label>
+			<p>
+				<label for="<?php echo $widget->get_field_id( 'desc_length' ); ?>">
+					<?php _e( 'Excerpt Length:', 'advanced-categories-widget' ); ?>
+				</label>
+				<input class="widefat widgin-excerpt-length" id="<?php echo $widget->get_field_id( 'desc_length' ); ?>" name="<?php echo $widget->get_field_name( 'desc_length' ); ?>" type="number" step="1" min="0" value="<?php echo absint( $instance['desc_length'] ); ?>" />
+			</p>
 
-			<span class="widgin-excerpt-preview">
-				<span class="widgin-excerpt"><?php echo wp_trim_words( Advanced_Categories_Widget_Utils::sample_description(), 15, '&hellip;' ); ?></span>
-			</span>
-		</p>
+			<p>
+				<?php _e( 'Preview:', 'advanced-categories-widget' ); ?><br />
+
+				<span class="widgin-preview-container">
+					<span class="widgin-excerpt-preview">
+						<span class="widgin-excerpt"><?php echo wp_trim_words( Advanced_Categories_Widget_Utils::sample_description(), 15, '&hellip;' ); ?></span>
+						<span class="widgin-excerpt-sample" aria-hidden="true" role="presentation"><?php echo Advanced_Categories_Widget_Utils::sample_description(); ?></span>
+					</span>
+				</span>
+			</p>
+
+		</div>
 
 		<?php
 		$field = ob_get_clean();
