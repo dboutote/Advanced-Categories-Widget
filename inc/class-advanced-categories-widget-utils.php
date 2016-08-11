@@ -272,7 +272,7 @@ class Advanced_Categories_Widget_Utils
 		if( count( $sizes )&& 'all' === $fields ) {
 
 			$image_sizes = array();
-			asort( $sizes, SORT_NATURAL );
+			natsort( $sizes );
 
 			foreach ( $sizes as $_size ) {
 				if ( in_array( $_size, $wp_defaults ) ) {
